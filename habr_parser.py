@@ -1,3 +1,4 @@
+import time
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -66,7 +67,7 @@ def main():
         articles = get_articles_from_page(ARTICLES_URL)
         found_articles = []
         
-        for article in articles:
+        for i, article in enumerate(articles):
             article_data = parse_article_preview(article)
             
             if not article_data:
@@ -91,6 +92,10 @@ def main():
                     'link': article_data['link'],
                     'keywords': found_keywords
                 })
+            
+            # ДОБАВЛЯЕМ ЗАДЕРЖКУ МЕЖДУ ОБРАБОТКОЙ СТАТЕЙ
+            if i < len(articles) - 1:  # Не ждем после последней статьи
+                time.sleep(1)  # Задержка 1 секунда
         
         # Вывод результатов в требуемом формате
         for article in found_articles:
